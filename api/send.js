@@ -1,11 +1,10 @@
 export default async function handler(req, res) {
-  // CORS headers
   res.setHeader("Access-Control-Allow-Origin", "https://dayger.co.uk");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
   if (req.method === "OPTIONS") {
-    return res.status(200).end(); // preflight OK
+    return res.status(200).end(); // răspunde la preflight
   }
 
   if (req.method !== "POST") {
@@ -23,7 +22,6 @@ export default async function handler(req, res) {
 
     const result = await response.text();
     return res.status(200).json({ success: true, response: result });
-
   } catch (error) {
     console.error("Proxy error:", error);
     return res.status(500).json({ success: false, error: error.message });
