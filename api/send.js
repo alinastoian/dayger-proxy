@@ -1,10 +1,16 @@
 export default async function handler(req, res) {
-  // Permite cereri din dayger.co.uk
-  res.setHeader("Access-Control-Allow-Origin", "https://dayger.co.uk");
+  // Allow requests from dayger.co.uk and www.dayger.co.uk
+  const allowedOrigins = ["https://dayger.co.uk", "https://www.dayger.co.uk"];
+  const origin = req.headers.origin;
+
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+  }
+
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
-  // Răspuns preflight pentru cererea OPTIONS
+  // Preflight response for OPTIONS request
   if (req.method === "OPTIONS") {
     return res.status(200).end();
   }
@@ -29,4 +35,6 @@ export default async function handler(req, res) {
     console.error("Proxy error:", error);
     return res.status(500).json({ success: false, error: error.message });
   }
+}
+
 }
